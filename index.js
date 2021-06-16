@@ -72,7 +72,26 @@ Person.prototype.toString = function () {
           + The `drive` method should return a string "I ran out of fuel at x miles!" x being `odometer`.
   */
 
-function Car() {}
+function Car(model, milesPerGallon, tank, odometer) {
+  this.model = model;
+  this.milesPerGallon = milesPerGallon;
+  this.tank = 0;
+  this.odometer = 0;
+}
+
+Car.prototype.fill = function (gallons) {
+  this.tank = this.tank + gallons;
+};
+
+Car.prototype.drive = function (distance) {
+  this.odometer = this.odometer + distance;
+  this.tank = this.tank - distance / this.milesPerGallon;
+  if (this.tank <= 0) {
+    return `I ran out of fuel at ${this.odometer} miles!`;
+  }
+};
+
+const Porche = new Car("Porche", 31, 13, 324);
 
 /*
     TASK 3
@@ -81,15 +100,27 @@ function Car() {}
       - Besides the methods on Person.prototype, babies have the ability to `.play()`:
           + Should return a string "Playing with x", x being the favorite toy.
   */
-function Baby() {}
+function Baby(name, age, favoriteToy) {
+  Person.call(this, name, age);
+  this.favoriteToy = favoriteToy;
+}
+
+Baby.prototype = Object.create(Person.prototype);
+
+Baby.prototype.play = function () {
+  return `Playing with ${this.favoriteToy}`;
+};
 
 /* 
     TASK 4
     In your own words explain the four principles for the "this" keyword below:
-    1. 
-    2. 
-    3. 
-    4. 
+    1. Window Binding is what happens if you use 'this' without context. It will by default reference the window object. Unless you have strict mode enabled. In that case, 'this' would return undefined
+
+    2. Implicit binding is the most common use of 'this'. When you use 'this' in an object method, it will refer to the object it is a part of.
+
+    3. Explicit binding is when you use .call, .bind, or .apply . In these situations, you have to explicity define what 'this' will refer to in the argument for one of these methods. For example: function.call(referenceObject)
+
+    4. New binding is when you use the 'new' constructor word. Any references of 'this' inside of the the constructor word will refer to the object you are constructing.
   */
 
 ///////// END OF CHALLENGE /////////
